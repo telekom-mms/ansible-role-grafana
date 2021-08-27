@@ -15,21 +15,21 @@ community.grafana
 | url                         | yes      |
 | url_username                | yes      |
 | url_password                | yes      |
-| **grafana_user**
+| **grafana_users**
 | name                        | yes      |
 | email                       | no       |
 | login                       | yes      |
 | password                    | no       |
 | is_admin                    | no       |
 | state                       | no       |
-| **grafana_team**
+| **grafana_teams**
 | name                        | yes      |
 | email                       | no       |
 | members                     | no       |
 | state                       | no       |
 | enforce_members             | no       |
 | skip_version_check          | no       |
-| **grafana_datasource**
+| **grafana_datasources**
 | tls_skip_verify             | no       |
 | org_id                      | no       |
 | name                        | yes      |
@@ -43,11 +43,11 @@ community.grafana
 | password                    | no       |
 | additional_json_data        | no       |
 | additional_secure_json_data | no       |
-| **grafana_folder**
+| **grafana_folders**
 | name                        | yes      |
 | state                       | no       |
 | skip_version_check          | no       |
-| **grafana_dashboard**
+| **grafana_dashboards**
 | org_id                      | no       |
 | folder                      | no       |
 | state                       | no       |
@@ -74,14 +74,14 @@ community.grafana
     grafana_username: "{{ icinga_user }}"
     grafana_password: "{{ icinga_pass }}"
 
-    grafana_datasource:
+    grafana_datasources:
       - datasource:
         - loki
         name: "Loki"
         ds_type: "loki"
         ds_url: "http://127.0.0.1:3100"
         tls_skip_verify: yes
-    grafana_folder:
+    grafana_folders:
       - folder_object:
         - my_service
         - other_service
