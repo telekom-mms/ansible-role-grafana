@@ -1,6 +1,6 @@
 # Ansible Grafana
 
-This role is used to configure Grafana.
+Configure Grafana dashboards, folders, datasources, teams and users.
 
 ## Dependencies
 
