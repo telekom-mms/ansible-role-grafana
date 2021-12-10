@@ -1,7 +1,7 @@
 # Ansible Grafana
 
 ![T-Systems-MMS/ansible-role-grafana](https://github.com/T-Systems-MMS/ansible-role-grafana/workflows/test/badge.svg)
-![Ansible Galaxy](https://img.shields.io/badge/Galaxy-grafana-660198)
+[![Ansible Role](https://img.shields.io/ansible/role/d/57215)](https://galaxy.ansible.com/t_systems_mms/grafana)
 
 Configure Grafana dashboards, folders, datasources, teams and users.
 
