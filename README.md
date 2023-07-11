@@ -1,7 +1,7 @@
 # Ansible Grafana
 
-![T-Systems-MMS/ansible-role-grafana](https://github.com/T-Systems-MMS/ansible-role-grafana/workflows/test/badge.svg)
-[![Ansible Role](https://img.shields.io/ansible/role/d/57215)](https://galaxy.ansible.com/t_systems_mms/grafana)
+![telekom-mms/ansible-role-grafana](https://github.com/telekom-mms/ansible-role-grafana/workflows/test/badge.svg)
+[![Ansible Role](https://img.shields.io/ansible/role/d/57215)](https://galaxy.ansible.com/telekom_mms/grafana)
 
 Configure Grafana dashboards, folders, datasources, teams and users.
 
@@ -14,7 +14,6 @@ community.grafana
 
 | Variable | Required | Default |
 | -------- | -------- | ------- |
-
 | **grafana**
 | url | yes |
 | url_username | yes |
@@ -79,7 +78,7 @@ community.grafana
     grafana_password: "{{ icinga_pass }}"
 
     grafana_datasources:
-      - datasource:
+      - datasource_object:
         - loki
         name: "Loki"
         ds_type: "loki"
