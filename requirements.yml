@@ -1,5 +1,5 @@
 collections:
 - name: community.grafana
   version: 1.5.4
-- name: community.grafana
+- name: community.general
   version: 7.2.0
