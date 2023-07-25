@@ -33,3 +33,30 @@
         folder: my_service
         dashboard_uid: ES5apb27k
         path: test_dashboard.json
+
+    grafana_silences:
+      - start_time: '2023-07-29T08:45:45Z'
+        end_time: '2023-07-29T08:59:45Z'
+        comment: "my test comment"
+        author: admin
+        matchers:
+          - isEqual: true
+            isRegex: true
+            name: test1
+            value: test1
+          - isEqual: true
+            isRegex: true
+            name: test2
+            value: test2
+      - duration: 90m
+        comment: "my test comment for timerange downtime"
+        author: admin
+        matchers:
+          - isEqual: true
+            isRegex: true
+            name: test1
+            value: test1
+          - isEqual: true
+            isRegex: true
+            name: test2
+            value: test2

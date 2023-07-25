@@ -62,6 +62,13 @@ community.grafana
 | dashboard_id | no |
 | dashboard_revision | no |
 | commit_message | no |
+| **grafana_silences**
+| matchers | yes |
+| author | no |
+| comment | no |
+| start_time | no |
+| end_time | no |
+| duration | no |
 
 ## Example Playbook
 
@@ -89,4 +96,17 @@ community.grafana
       - folder_object:
         - my_service
         - other_service
+    grafa_silences:
+      - duration: 90m
+        comment: this is a test
+        author: me
+        matchers:
+          - isEqual: true
+            isRegex: true
+            name: test1
+            value: value_test1
+          - isEqual: true
+            isRegex: true
+            name: test2
+            value: value_test2
 ```

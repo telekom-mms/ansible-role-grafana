@@ -1,0 +1,32 @@
+---
+
+- name: set silence in Grafana
+  vars:
+    grafana_silences_flex_start_time: "{{ ansible_date_time.date }}T{{ ansible_date_time.time }}Z"
+    grafana_silences_flex_duration: "{{silence.duration | default(0)}}"
+    grafana_silences_flex_end_time: "{{ '%Y-%m-%dT%H:%M:%SZ' | strftime(ansible_date_time.epoch |  int + grafana_silences_flex_duration | community.general.to_time_unit('seconds')  | int) }}"
+  ansible.builtin.uri:
+    url: "{{ grafana_url }}/api/alertmanager/grafana/api/v2/silences"
+    use_proxy: "{{ grafana_use_proxy | default(omit) }}"
+    validate_certs: "{{ grafana_validate_certs | default(omit) }}"
+    url_username: "{{ grafana_username }}"
+    url_password: "{{ grafana_password }}"
+    force_basic_auth: "{{ grafana_force_basic_auth | default(omit) }}"
+    client_cert: "{{ grafana_client_cert | default(omit) }}"
+    client_key: "{{ grafana_client_key | default(omit) }}"
+    method: POST
+    body_format: json
+    return_content: true
+    body:
+      comment: "{{ silence.comment | default() }}" # e.g. testcomment
+      createdBy: "{{ silence.author | default() }}" # e.g. user
+      startsAt: "{{ silence.start_time if silence.start_time is defined else grafana_silences_flex_start_time }}" # e.g. '2023-07-20T07:32:19.458Z'
+      endsAt:  "{{ silence.end_time if silence.end_time is defined else grafana_silences_flex_end_time }}" # e.g. '2023-07-20T07:32:19.458Z'
+      matchers: "{{ silence.matchers }}" # e.g. [{"isEqual":true,"isRegex":true,"name":"test1","value":"test1"},{"isEqual":true,"isRegex":true,"name":"test2","value":"test2"}]
+    status_code: 202
+  retries: 3
+  register: end
+  loop: "{{ grafana_silences }}"
+  loop_control:
+    loop_var: silence
+  tags: silence

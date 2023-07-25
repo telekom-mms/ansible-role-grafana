@@ -88,3 +88,4 @@
     loop_var: dashboard
   tags: dashboard
 
+- import_tasks: silence.yml
