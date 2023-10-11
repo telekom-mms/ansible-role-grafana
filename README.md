@@ -14,7 +14,6 @@ community.grafana
 
 | Variable | Required | Default |
 | -------- | -------- | ------- |
-| **grafana**
 | grafana_url | yes |
 | grafana_username | yes |
 | grafana_password | yes |
