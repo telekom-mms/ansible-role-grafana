@@ -1,7 +1,7 @@
 # Ansible Grafana
 
 ![telekom-mms/ansible-role-grafana](https://github.com/telekom-mms/ansible-role-grafana/workflows/test/badge.svg)
-[![Ansible Role](https://img.shields.io/ansible/role/d/57215)](https://galaxy.ansible.com/telekom_mms/grafana)
+[![Ansible Role](https://img.shields.io/ansible/role/d/32178)](https://galaxy.ansible.com/ui/standalone/roles/telekom-mms/grafana/)
 
 Configure Grafana dashboards, folders, datasources, teams and users.
 
