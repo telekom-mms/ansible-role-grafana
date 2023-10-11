@@ -14,11 +14,10 @@ community.grafana
 
 | Variable | Required | Default |
 | -------- | -------- | ------- |
-
 | **grafana**
-| url | yes |
-| url_username | yes |
-| url_password | yes |
+| grafana_url | yes |
+| grafana_username | yes |
+| grafana_password | yes |
 | **grafana_users**
 | name | yes |
 | email | no |
