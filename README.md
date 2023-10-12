@@ -3,12 +3,12 @@
 ![telekom-mms/ansible-role-grafana](https://github.com/telekom-mms/ansible-role-grafana/workflows/test/badge.svg)
 [![Ansible Role](https://img.shields.io/ansible/role/d/32178)](https://galaxy.ansible.com/ui/standalone/roles/telekom-mms/grafana/)
 
-Configure Grafana dashboards, folders, datasources, teams and users.
+Configure Grafana organizations, dashboards, folders, datasources, teams and users.
 
 ## Dependencies
 
-collections:
-community.grafana
+### Collections
+- community.grafana
 
 ## Role Variables
 
@@ -66,18 +66,15 @@ community.grafana
 
 ## Example Playbook
 
-```bash
+```yaml
 ---
 - hosts: localhost
   gather_facts: false
-  collections:
-    - community.grafana
-  roles:
-    - role: grafana
+
   vars:
-    grafana_url: "{{ icinga_url }}/grafanaweb"
-    grafana_username: "{{ icinga_user }}"
-    grafana_password: "{{ icinga_pass }}"
+    grafana_url: "https://monitoring.example.com"
+    grafana_username: "api-user"
+    grafana_password: "******"
 
     grafana_datasources:
       - datasource_object:
@@ -90,4 +87,7 @@ community.grafana
       - folder_object:
         - my_service
         - other_service
+
+  roles:
+    - role: telekom-mms.grafana
 ```
