@@ -68,7 +68,7 @@
     loop_var: user
   tags: user
 
-# community.grafana 1.6.0 release required
+### community.grafana 1.6.0 release required
 # - name: Manage organization user
 #   community.grafana.grafana_organization_user:
 #     url: "{{ grafana_url }}"
