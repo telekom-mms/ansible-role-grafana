@@ -62,6 +62,13 @@ community.grafana
 | dashboard_id | no |
 | dashboard_revision | no |
 | commit_message | no |
+<!--- community.grafana 1.6.0 release required
+| [**grafana_organization_users**](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_organization_user_module.html)
+| login | yes |
+| role | no |
+| state | no |
+| org_id | no |
+--->
 
 ## Example Playbook
 
