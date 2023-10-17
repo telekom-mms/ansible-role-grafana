@@ -1,0 +1,63 @@
+---
+# community.grafana 1.6.0 release required
+- name: Manage organization user
+  community.grafana.grafana_organization_user:
+    url: "{{ grafana_url }}"
+    url_username: "{{ grafana_username }}"
+    url_password: "{{ grafana_password }}"
+    login: "{{ organization_user.login }}"
+    role: "{{ organization_user.role | default(omit) }}"
+    state: "{{ organization_user.state | default(omit) }}"
+    org_id: "{{ organization_user.org_id | default(omit) }}"
+  loop: "{{ grafana_organization_users | selectattr('org_name', 'undefined') | list }}"
+  loop_control: {loop_var: organization_user}
+  tags: organization_user
+
+- name: Grafana organization API tasks
+  tags: organization_user
+  module_defaults:
+    ansible.builtin.uri:
+      url_username: "{{ grafana_username }}"
+      url_password: "{{ grafana_password }}"
+      force_basic_auth: true
+      return_content: true
+  block:
+    - name: Get organizations
+      ansible.builtin.uri:
+        url: "{{ grafana_url }}/api/orgs/name/{{ organization_user.org_name | urlencode }}"
+      loop: "{{ grafana_organization_users | selectattr('org_name', 'defined') | list | unique }}"
+      loop_control: {loop_var: organization_user}
+      register: _grafana_organizations
+
+    - name: Get users
+      ansible.builtin.uri:
+        url: "{{ grafana_url }}/api/users/lookup?loginOrEmail={{ user.login | default(user.email) | urlencode }}"
+      loop: "{{ grafana_organization_users | selectattr('state', 'eq', 'absent') | list }}"
+      loop_control: {loop_var: user}
+      when: "{{ grafana_organization_users | selectattr('state', 'defined') }}"
+      register: _grafana_users
+
+    - name: Manage organization user
+      ansible.builtin.uri:
+        url: "{{ grafana_url }}/api/orgs/{{ _org_id }}/users{{ '/' ~ _user_id if organization_user.state | default('') == 'absent' else '' }}"
+        body:
+          loginOrEmail: "{{ organization_user.login | default(organization_user.email) }}"
+          role: "{{ organization_user.role | default(omit) }}"
+        body_format: json
+        method: "{{ 'DELETE' if organization_user.state | default('') == 'absent' else 'POST' }}"
+      loop: "{{ grafana_organization_users | selectattr('org_name', 'defined') }}"
+      loop_control: {loop_var: organization_user}
+      vars:
+        _org_id: "{{ _grafana_organizations.results |
+                     map(attribute='json') |
+                     selectattr('name', 'eq', organization_user.org_name) |
+                     map(attribute='id') |
+                     first }}"
+        _user_id: "{{ _grafana_users.results |
+                      map(attribute='json') |
+                      selectattr('login', 'eq', organization_user.login) |
+                      map(attribute='id') |
+                      first }}"
+      register: _grafana_organization_user
+      changed_when: _grafana_organization_user.json.message in ["User added to organization", "User removed from organization"]
+      failed_when: _grafana_organization_user.json.message != "User is already member of this organization"

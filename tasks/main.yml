@@ -68,56 +68,8 @@
     loop_var: user
   tags: user
 
-### community.grafana 1.6.0 release required
-# - name: Manage organization user
-#   community.grafana.grafana_organization_user:
-#     url: "{{ grafana_url }}"
-#     url_username: "{{ grafana_username }}"
-#     url_password: "{{ grafana_password }}"
-#     login: "{{ organization_user.login }}"
-#     role: "{{ organization_user.role | default(omit) }}"
-#     state: "{{ organization_user.state | default(omit) }}"
-#     org_id: "{{ organization_user.org_id | default(omit) }}"
-#   loop: "{{ grafana_organization_users | selectattr('org_name', 'undefined') | list }}"
-#   loop_control: {loop_var: organization_user}
-#   tags: organization_user
-
-- name: Get organizations
-  ansible.builtin.uri:
-    url: "{{ grafana_url }}/api/orgs/name/{{ organization_user.org_name | urlencode }}"
-    url_username: "{{ grafana_username }}"
-    url_password: "{{ grafana_password }}"
-    force_basic_auth: true
-    return_content: true
-  loop: "{{ grafana_organization_users | selectattr('org_name', 'defined') | list | unique }}"
-  loop_control: {loop_var: organization_user}
-  tags: organization_user
-  register: _grafana_organizations
-
-- name: Get users
-  ansible.builtin.uri:
-    url: "{{ grafana_url }}/api/users/lookup?loginOrEmail={{ user.login | default(user.email) | urlencode }}"
-    url_username: "{{ grafana_username }}"
-    url_password: "{{ grafana_password }}"
-    force_basic_auth: true
-    return_content: true
-  loop: "{{ grafana_organization_users | selectattr('state', 'eq', 'absent') | list }}"
-  loop_control: {loop_var: user}
-  when: "{{ grafana_organization_users | selectattr('state', 'defined') }}"
-  tags: organization_user
-  register: _grafana_users
-
-- name: Manage organization user
-  ansible.builtin.uri:
-    url: "{{ grafana_url }}/api/orgs/{{ _org_id }}/users{{ '/' ~ _user_id if organization_user.state | default('') == 'absent' else '' }}"
-    url_username: "{{ grafana_username }}"
-    url_password: "{{ grafana_password }}"
-    force_basic_auth: true
-    return_content: true
-    body:
-      loginOrEmail: "{{ organization_user.login | default(organization_user.email) }}"
-      role: "{{ organization_user.role | default(omit) }}"
-    body_format: json
+- name: Organization users
+  ansible.builtin.include_tasks: organization_users.yml
 
 - name: Manage dashboard
   community.grafana.grafana_dashboard:
