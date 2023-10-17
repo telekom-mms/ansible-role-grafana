@@ -84,16 +84,13 @@ Configure Grafana organizations, dashboards, folders, datasources, teams and use
     grafana_password: "******"
 
     grafana_datasources:
-      - datasource_object:
-        - loki
-        name: "Loki"
+      - name: "Loki"
         ds_type: "loki"
         ds_url: "http://127.0.0.1:3100"
         tls_skip_verify: yes
     grafana_folders:
-      - folder_object:
-        - my_service
-        - other_service
+      - name: my_service
+      - name: other_service
 
   roles:
     - role: telekom-mms.grafana
