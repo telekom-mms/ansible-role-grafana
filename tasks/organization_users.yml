@@ -19,7 +19,7 @@
       url_password: "{{ grafana_password }}"
       force_basic_auth: true
       return_content: true
-  when: "{{ grafana_organization_users | selectattr('org_name', 'defined') | list > 0 }}"
+  when: grafana_organization_users | selectattr('org_name', 'defined') | list | length > 0
   block:
     - name: Get organizations
       ansible.builtin.uri:
@@ -33,7 +33,7 @@
         url: "{{ grafana_url }}/api/users/lookup?loginOrEmail={{ user.login | urlencode }}"
       loop: "{{ grafana_organization_users | selectattr('state', 'eq', 'absent') | list }}"
       loop_control: {loop_var: user}
-      when: "{{ grafana_organization_users | selectattr('state', 'defined') }}"
+      when: grafana_organization_users | selectattr('state', 'defined')
       register: _grafana_users
 
     - name: Manage organization user
