@@ -70,6 +70,8 @@
 
 - name: Organization users
   ansible.builtin.include_tasks: organization_users.yml
+  apply: {tags: organization_user}
+  tags: always
 
 - name: Manage dashboard
   community.grafana.grafana_dashboard:
