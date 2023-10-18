@@ -1,16 +1,16 @@
 ---
-# community.grafana 1.6.0 release required
-- name: Manage organization user
-  community.grafana.grafana_organization_user:
-    url: "{{ grafana_url }}"
-    url_username: "{{ grafana_username }}"
-    url_password: "{{ grafana_password }}"
-    login: "{{ organization_user.login }}"
-    role: "{{ organization_user.role | default(omit) }}"
-    state: "{{ organization_user.state | default(omit) }}"
-    org_id: "{{ organization_user.org_id | default(omit) }}"
-  loop: "{{ grafana_organization_users | selectattr('org_name', 'undefined') | list }}"
-  loop_control: {loop_var: organization_user}
+# requires community.grafana >= 1.6.0
+# - name: Manage organization users by org_id
+#   community.grafana.grafana_organization_user:
+#     url: "{{ grafana_url }}"
+#     url_username: "{{ grafana_username }}"
+#     url_password: "{{ grafana_password }}"
+#     login: "{{ organization_user.login }}"
+#     role: "{{ organization_user.role | default(omit) }}"
+#     state: "{{ organization_user.state | default(omit) }}"
+#     org_id: "{{ organization_user.org_id | default(omit) }}"
+#   loop: "{{ grafana_organization_users | selectattr('org_id', 'defined') | list }}"
+#   loop_control: {loop_var: organization_user}
 
 - name: Grafana organization API tasks
   module_defaults:
@@ -23,31 +23,31 @@
   block:
     - name: Get organizations
       ansible.builtin.uri:
-        url: "{{ grafana_url }}/api/orgs/name/{{ organization_user.org_name | urlencode }}"
-      loop: "{{ grafana_organization_users | selectattr('org_name', 'defined') | list | unique }}"
-      loop_control: {loop_var: organization_user}
+        url: "{{ grafana_url }}/api/orgs/name/{{ organization_names | urlencode }}"
+      loop: "{{ grafana_organization_users | map(attribute='org_name') | unique | list }}"
+      loop_control: {loop_var: organization_names}
       register: _grafana_organizations
 
     - name: Get users
       ansible.builtin.uri:
         url: "{{ grafana_url }}/api/users/lookup?loginOrEmail={{ user.login | urlencode }}"
-      loop: "{{ grafana_organization_users | selectattr('state', 'eq', 'absent') | list }}"
+      loop: "{{ grafana_organization_users | selectattr('state', 'defined') | selectattr('state', 'eq', 'absent') | list }}"
       loop_control: {loop_var: user}
-      when: grafana_organization_users | selectattr('state', 'defined')
       register: _grafana_users
 
-    - name: Manage organization user
+    - name: Manage organization users by org_name
       ansible.builtin.uri:
-        url: "{{ grafana_url }}/api/orgs/{{ _org_id }}/users{{ '/' ~ _user_id if _organization_user_state == 'absent' else '' }}"
+        url: "{{ grafana_url }}/api/orgs/{{ _org_id }}/users{{ '/' ~ _user_id if _org_user_state == 'absent' else '' }}"
         body:
           loginOrEmail: "{{ organization_user.login }}"
           role: "{{ organization_user.role | default(omit) }}"
         body_format: json
-        method: "{{ 'DELETE' if _organization_user_state == 'absent' else 'POST' }}"
+        method: "{{ 'DELETE' if _org_user_state == 'absent' else 'POST' }}"
+        status_code: ["200", "409"]
       loop: "{{ grafana_organization_users | selectattr('org_name', 'defined') }}"
       loop_control: {loop_var: organization_user}
       vars:
-        _organization_user_state: "{{ organization_user.state | default('') }}"
+        _org_user_state: "{{ organization_user.state | default('') }}"
         _org_id: "{{ _grafana_organizations.results |
                      map(attribute='json') |
                      selectattr('name', 'eq', organization_user.org_name) |
@@ -60,4 +60,3 @@
                       first }}"
       register: _grafana_organization_user
       changed_when: _grafana_organization_user.json.message in ["User added to organization", "User removed from organization"]
-      failed_when: _grafana_organization_user.json.message != "User is already member of this organization"
