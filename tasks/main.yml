@@ -72,7 +72,8 @@
   ansible.builtin.include_tasks:
     file: organization_users.yml
     apply: {tags: organization_user}
-  tags: always
+  when: grafana_organization_users | length > 0
+  tags: organization_user
 
 - name: Manage dashboard
   community.grafana.grafana_dashboard:
