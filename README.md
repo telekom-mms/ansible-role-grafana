@@ -8,15 +8,17 @@ Configure Grafana organizations, dashboards, folders, datasources, teams and use
 ## Dependencies
 
 ### Collections
+
 - community.grafana
 
 ## Role Variables
 
-| Variable | Required | Default |
-| -------- | -------- | ------- |
-| grafana_url | yes |
-| grafana_username | yes |
-| grafana_password | yes |
+| Variable         | Required | Default |
+| ---------------- | -------- | ------- |
+| grafana_url      | yes      |
+| grafana_username | yes      |
+| grafana_password | yes      |
+
 | [**grafana_users**](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_user_module.html)
 | name | yes |
 | email | no |
