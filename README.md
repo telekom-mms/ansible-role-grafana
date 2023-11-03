@@ -68,8 +68,7 @@ Configure Grafana organizations, dashboards, folders, datasources, teams and use
 | login | yes |
 | role | no |
 | state | no |
-| org_name | no |
-| org_id | no |
+| org_id / org_name | no |
 
 ## Example Playbook
 
