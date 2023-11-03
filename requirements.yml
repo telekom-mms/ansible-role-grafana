@@ -1,2 +1,2 @@
 ---
-collections: [{name: community.grafana, version: 1.5.4}]
+collections: [{name: community.grafana, version: 1.6.0}]
