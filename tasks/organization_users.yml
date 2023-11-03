@@ -1,16 +1,15 @@
 ---
-# requires community.grafana >= 1.6.0
-# - name: Manage organization users by org_id
-#   community.grafana.grafana_organization_user:
-#     url: "{{ grafana_url }}"
-#     url_username: "{{ grafana_username }}"
-#     url_password: "{{ grafana_password }}"
-#     login: "{{ organization_user.login }}"
-#     role: "{{ organization_user.role | default(omit) }}"
-#     state: "{{ organization_user.state | default(omit) }}"
-#     org_id: "{{ organization_user.org_id | default(omit) }}"
-#   loop: "{{ grafana_organization_users | selectattr('org_id', 'defined') | list }}"
-#   loop_control: {loop_var: organization_user}
+- name: Manage organization users by org_id
+  community.grafana.grafana_organization_user:
+    url: "{{ grafana_url }}"
+    url_username: "{{ grafana_username }}"
+    url_password: "{{ grafana_password }}"
+    login: "{{ organization_user.login }}"
+    role: "{{ organization_user.role | default(omit) }}"
+    state: "{{ organization_user.state | default(omit) }}"
+    org_id: "{{ organization_user.org_id | default(omit) }}"
+  loop: "{{ grafana_organization_users | selectattr('org_id', 'defined') | list }}"
+  loop_control: {loop_var: organization_user}
 
 - name: Grafana organization API tasks
   module_defaults:
