@@ -13,58 +13,71 @@ Configure Grafana organizations, dashboards, folders, datasources, teams and use
 
 ## Role Variables
 
-| Variable         | Required | Default |
-| ---------------- | -------- | ------- |
-| grafana_url      | yes      |
-| grafana_username | yes      |
-| grafana_password | yes      |
+Note: There are no default values set for these variables.
 
-| [**grafana_users**](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_user_module.html)
-| name | yes |
-| email | no |
-| login | yes |
-| password | no |
-| is_admin | no |
-| state | no |
-| [**grafana_organizations**](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_organization_module.html)
-| name | yes |
-| state | no |
-| [**grafana_teams**](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_team_module.html)
-| name | yes |
-| email | no |
-| members | no |
-| state | no |
-| enforce_members | no |
-| skip_version_check | no |
-| [**grafana_datasources**](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_datasource_module.html)
-| tls_skip_verify | no |
-| org_id | no |
-| name | yes |
-| ds_type | no |
-| access | no |
-| ds_url | no |
-| database | no |
-| with_credentials | no |
-| is_default | no |
-| user | no |
-| password | no |
-| additional_json_data | no |
-| additional_secure_json_data | no |
-| [**grafana_folders**](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_folder_module.html)
-| name | yes |
-| state | no |
-| skip_version_check | no |
-| [**grafana_dashboards**](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_dashboard_module.html)
-| org_id | no |
-| folder | no |
-| state | no |
-| slug | no |
-| uid | no |
-| path | no |
-| overwrite | no |
-| dashboard_id | no |
-| dashboard_revision | no |
-| commit_message | no |
+| Variable          | Required | 
+| ----------------- | -------- | 
+| grafana_url       | yes      | 
+| grafana_username  | yes      | 
+| grafana_password  | yes      | 
+
+| **[grafana_users](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_user_module.html)** | Required |
+| --- | --- |
+| name      | yes |
+| email     | no  |
+| login     | yes |
+| password  | no  |
+| is_admin  | no  |
+| state     | no  |
+
+| **[grafana_organizations](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_organization_module.html)** | Required |
+| --- | --- |
+| name      | yes |
+| state     | no  |
+
+| **[grafana_teams](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_team_module.html)** | Required |
+| --- | --- |
+| name              | yes |
+| email             | no  |
+| members           | no  |
+| state             | no  |
+| enforce_members   | no  |
+| skip_version_check| no  |
+
+| **[grafana_datasources](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_datasource_module.html)** | Required |
+| --- | --- |
+| tls_skip_verify            | no  |
+| org_id                     | no  |
+| name                       | yes |
+| ds_type                    | no  |
+| access                     | no  |
+| ds_url                     | no  |
+| database                   | no  |
+| with_credentials           | no  |
+| is_default                 | no  |
+| user                       | no  |
+| password                   | no  |
+| additional_json_data       | no  |
+| additional_secure_json_data| no  |
+
+| **[grafana_folders](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_folder_module.html)** | Required |
+| --- | --- |
+| name              | yes |
+| state             | no  |
+| skip_version_check| no  |
+
+| **[grafana_dashboards](https://docs.ansible.com/ansible/latest/collections/community/grafana/grafana_dashboard_module.html)** | Required |
+| --- | --- |
+| org_id            | no  |
+| folder            | no  |
+| state             | no  |
+| slug              | no  |
+| uid               | no  |
+| path              | no  |
+| overwrite         | no  |
+| dashboard_id      | no  |
+| dashboard_revision| no  |
+| commit_message    | no  |
 
 ## Example Playbook
 
